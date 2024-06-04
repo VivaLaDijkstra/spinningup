@@ -1,8 +1,7 @@
 import numpy as np
 import torch.nn as nn
 
-from spinup.exercises.pytorch.problem_set_1 import (exercise1_1,
-                                                    exercise1_2_auxiliary)
+from spinup.exercises.pytorch.problem_set_1 import exercise1_1, exercise1_2_auxiliary
 
 """
 
@@ -43,7 +42,6 @@ def mlp(sizes, activation, output_activation=nn.Identity):
 
 
 class DiagonalGaussianDistribution:
-
     def __init__(self, mu, log_std):
         self.mu = mu
         self.log_std = log_std
@@ -72,7 +70,6 @@ class DiagonalGaussianDistribution:
 
 
 class MLPGaussianActor(nn.Module):
-
     def __init__(self, obs_dim, act_dim, hidden_sizes, activation):
         super().__init__()
         """
@@ -121,9 +118,7 @@ if __name__ == "__main__":
 
     logdir = "/tmp/experiments/%i" % int(time.time())
 
-    ActorCritic = partial(
-        exercise1_2_auxiliary.ExerciseActorCritic, actor=MLPGaussianActor
-    )
+    ActorCritic = partial(exercise1_2_auxiliary.ExerciseActorCritic, actor=MLPGaussianActor)
 
     ppo(
         env_fn=lambda: gym.make("InvertedPendulum-v2"),

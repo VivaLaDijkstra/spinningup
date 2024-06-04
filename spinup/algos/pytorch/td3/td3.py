@@ -263,7 +263,6 @@ def td3(
 
         # Possibly update pi and target networks
         if timer % policy_delay == 0:
-
             # Freeze Q-networks so you don't waste computational effort
             # computing gradients for them during the policy learning step.
             for p in q_params:
@@ -312,7 +311,6 @@ def td3(
 
     # Main loop: collect experience in env and update/log each epoch
     for t in range(total_steps):
-
         # Until start_steps have elapsed, randomly sample actions
         # from a uniform distribution for better exploration. Afterwards,
         # use the learned policy (with some noise, via act_noise).

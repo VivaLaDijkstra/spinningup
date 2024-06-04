@@ -33,9 +33,7 @@ def load_policy_and_env(fpath, itr="last", deterministic=False):
         # check filenames for epoch (AKA iteration) numbers, find maximum value
 
         if backend == "tf1":
-            saves = [
-                int(x[8:]) for x in os.listdir(fpath) if "tf1_save" in x and len(x) > 8
-            ]
+            saves = [int(x[8:]) for x in os.listdir(fpath) if "tf1_save" in x and len(x) > 8]
 
         elif backend == "pytorch":
             pytsave_path = osp.join(fpath, "pyt_save")
@@ -51,9 +49,7 @@ def load_policy_and_env(fpath, itr="last", deterministic=False):
         itr = "%d" % max(saves) if len(saves) > 0 else ""
 
     else:
-        assert isinstance(
-            itr, int
-        ), "Bad value provided for itr (needs to be int or 'last')."
+        assert isinstance(itr, int), "Bad value provided for itr (needs to be int or 'last')."
         itr = "%d" % itr
 
     # load the get_action function
@@ -117,7 +113,6 @@ def load_pytorch_policy(fpath, itr, deterministic=False):
 
 
 def run_policy(env, get_action, max_ep_len=None, num_episodes=100, render=True):
-
     assert env is not None, (
         "Environment not found!\n\n It looks like the environment wasn't saved, "
         + "and we can't run the agent in it. :( \n\n Check out the readthedocs "

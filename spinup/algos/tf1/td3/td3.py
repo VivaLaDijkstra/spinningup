@@ -178,9 +178,7 @@ def td3(
     ac_kwargs["action_space"] = env.action_space
 
     # Inputs to computation graph
-    x_ph, a_ph, x2_ph, r_ph, d_ph = core.placeholders(
-        obs_dim, act_dim, obs_dim, None, None
-    )
+    x_ph, a_ph, x2_ph, r_ph, d_ph = core.placeholders(obs_dim, act_dim, obs_dim, None, None)
 
     # Main outputs from computation graph
     with tf.variable_scope("main"):
@@ -192,7 +190,6 @@ def td3(
 
     # Target Q networks
     with tf.variable_scope("target", reuse=True):
-
         # Target policy smoothing, by adding clipped noise to target actions
         epsilon = tf.random_normal(tf.shape(pi_targ), stddev=target_noise)
         epsilon = tf.clip_by_value(epsilon, -noise_clip, noise_clip)
@@ -209,10 +206,7 @@ def td3(
     var_counts = tuple(
         core.count_vars(scope) for scope in ["main/pi", "main/q1", "main/q2", "main"]
     )
-    print(
-        "\nNumber of parameters: \t pi: %d, \t q1: %d, \t q2: %d, \t total: %d\n"
-        % var_counts
-    )
+    print("\nNumber of parameters: \t pi: %d, \t q1: %d, \t q2: %d, \t total: %d\n" % var_counts)
 
     # Bellman backup for Q functions, using Clipped Double-Q targets
     min_q_targ = tf.minimum(q1_targ, q2_targ)
@@ -240,10 +234,7 @@ def td3(
 
     # Initializing targets to match main variables
     target_init = tf.group(
-        [
-            tf.assign(v_targ, v_main)
-            for v_main, v_targ in zip(get_vars("main"), get_vars("target"))
-        ]
+        [tf.assign(v_targ, v_main) for v_main, v_targ in zip(get_vars("main"), get_vars("target"))]
     )
 
     sess = tf.Session()
@@ -276,7 +267,6 @@ def td3(
 
     # Main loop: collect experience in env and update/log each epoch
     for t in range(total_steps):
-
         # Until start_steps have elapsed, randomly sample actions
         # from a uniform distribution for better exploration. Afterwards,
         # use the learned policy (with some noise, via act_noise).

@@ -19,7 +19,6 @@ def train(
     batch_size=5000,
     render=False,
 ):
-
     # make environment, check spaces, get obs / act dims
     env = gym.make(env_name)
     assert isinstance(
@@ -71,7 +70,6 @@ def train(
 
         # collect experience by acting in the environment with current policy
         while True:
-
             # rendering
             if (not finished_rendering_this_epoch) and render:
                 env.render()

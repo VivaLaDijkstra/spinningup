@@ -44,7 +44,6 @@ def discount_cumsum(x, discount):
 
 
 class Actor(nn.Module):
-
     def _distribution(self, obs):
         raise NotImplementedError
 
@@ -63,7 +62,6 @@ class Actor(nn.Module):
 
 
 class MLPCategoricalActor(Actor):
-
     def __init__(self, obs_dim, act_dim, hidden_sizes, activation):
         super().__init__()
         self.logits_net = mlp([obs_dim] + list(hidden_sizes) + [act_dim], activation)
@@ -77,7 +75,6 @@ class MLPCategoricalActor(Actor):
 
 
 class MLPGaussianActor(Actor):
-
     def __init__(self, obs_dim, act_dim, hidden_sizes, activation):
         super().__init__()
         log_std = -0.5 * np.ones(act_dim, dtype=np.float32)
@@ -90,41 +87,29 @@ class MLPGaussianActor(Actor):
         return Normal(mu, std)
 
     def _log_prob_from_distribution(self, pi, act):
-        return pi.log_prob(act).sum(
-            axis=-1
-        )  # Last axis sum needed for Torch Normal distribution
+        return pi.log_prob(act).sum(axis=-1)  # Last axis sum needed for Torch Normal distribution
 
 
 class MLPCritic(nn.Module):
-
     def __init__(self, obs_dim, hidden_sizes, activation):
         super().__init__()
         self.v_net = mlp([obs_dim] + list(hidden_sizes) + [1], activation)
 
     def forward(self, obs):
-        return torch.squeeze(
-            self.v_net(obs), -1
-        )  # Critical to ensure v has right shape.
+        return torch.squeeze(self.v_net(obs), -1)  # Critical to ensure v has right shape.
 
 
 class MLPActorCritic(nn.Module):
-
-    def __init__(
-        self, observation_space, action_space, hidden_sizes=(64, 64), activation=nn.Tanh
-    ):
+    def __init__(self, observation_space, action_space, hidden_sizes=(64, 64), activation=nn.Tanh):
         super().__init__()
 
         obs_dim = observation_space.shape[0]
 
         # policy builder depends on action space
         if isinstance(action_space, Box):
-            self.pi = MLPGaussianActor(
-                obs_dim, action_space.shape[0], hidden_sizes, activation
-            )
+            self.pi = MLPGaussianActor(obs_dim, action_space.shape[0], hidden_sizes, activation)
         elif isinstance(action_space, Discrete):
-            self.pi = MLPCategoricalActor(
-                obs_dim, action_space.n, hidden_sizes, activation
-            )
+            self.pi = MLPCategoricalActor(obs_dim, action_space.n, hidden_sizes, activation)
 
         # build value function
         self.v = MLPCritic(obs_dim, hidden_sizes, activation)

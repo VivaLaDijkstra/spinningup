@@ -7,10 +7,8 @@ from torch.optim import Adam
 
 import spinup.algos.pytorch.vpg.core as core
 from spinup.utils.logx import EpochLogger
-from spinup.utils.mpi_pytorch import (mpi_avg_grads, setup_pytorch_for_mpi,
-                                      sync_params)
-from spinup.utils.mpi_tools import (mpi_fork, mpi_statistics_scalar, num_procs,
-                                    proc_id)
+from spinup.utils.mpi_pytorch import mpi_avg_grads, setup_pytorch_for_mpi, sync_params
+from spinup.utils.mpi_tools import mpi_fork, mpi_statistics_scalar, num_procs, proc_id
 
 
 class VPGBuffer:

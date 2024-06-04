@@ -43,9 +43,7 @@ def mlp(x, hidden_sizes=(32,), activation=tf.tanh, output_activation=None):
     pass
 
 
-def mlp_gaussian_policy(
-    x, a, hidden_sizes, activation, output_activation, action_space
-):
+def mlp_gaussian_policy(x, a, hidden_sizes, activation, output_activation, action_space):
     """
     Builds symbols to sample actions and compute log-probs of actions.
 

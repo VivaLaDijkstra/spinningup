@@ -127,9 +127,7 @@ def parse_and_execute_grid_search(cmd, args):
     for k in RUN_KEYS:
         if k in arg_dict:
             val = arg_dict[k]
-            assert len(val) == 1, friendly_err(
-                "You can only provide one value for %s." % k
-            )
+            assert len(val) == 1, friendly_err("You can only provide one value for %s." % k)
             run_kwargs[k] = val[0]
             del arg_dict[k]
 
@@ -200,9 +198,7 @@ if __name__ == "__main__":
     valid_utils = ["plot", "test_policy"]
     valid_help = ["--help", "-h", "help"]
     valid_cmds = valid_algos + valid_utils + valid_help
-    assert (
-        cmd in valid_cmds
-    ), "Select an algorithm or utility which is implemented in Spinning Up."
+    assert cmd in valid_cmds, "Select an algorithm or utility which is implemented in Spinning Up."
 
     if cmd in valid_help:
         # Before all else, check to see if any of the flags is 'help'.
@@ -225,8 +221,7 @@ if __name__ == "__main__":
 
         # Provide some useful details for algorithm running.
         subs_list = [
-            "--" + k.ljust(10) + "for".ljust(10) + "--" + v
-            for k, v in SUBSTITUTIONS.items()
+            "--" + k.ljust(10) + "for".ljust(10) + "--" + v for k, v in SUBSTITUTIONS.items()
         ]
         str_valid_subs = "\n\t" + "\n\t".join(subs_list)
         special_info = (

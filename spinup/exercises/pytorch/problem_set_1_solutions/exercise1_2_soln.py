@@ -21,7 +21,6 @@ def gaussian_likelihood(x, mu, log_std):
 
 
 class DiagonalGaussianDistribution:
-
     def __init__(self, mu, log_std):
         self.mu = mu
         self.log_std = log_std
@@ -37,7 +36,6 @@ class DiagonalGaussianDistribution:
 
 
 class MLPGaussianActor(nn.Module):
-
     def __init__(self, obs_dim, act_dim, hidden_sizes, activation):
         super().__init__()
         log_std = -0.5 * np.ones(act_dim, dtype=np.float32)

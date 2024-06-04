@@ -32,15 +32,11 @@ def bugged_mlp_actor_critic(
     act_dim = a.shape.as_list()[-1]
     act_limit = action_space.high[0]
     with tf.variable_scope("pi"):
-        pi = act_limit * mlp(
-            x, list(hidden_sizes) + [act_dim], activation, output_activation
-        )
+        pi = act_limit * mlp(x, list(hidden_sizes) + [act_dim], activation, output_activation)
     with tf.variable_scope("q"):
         q = mlp(tf.concat([x, a], axis=-1), list(hidden_sizes) + [1], activation, None)
     with tf.variable_scope("q", reuse=True):
-        q_pi = mlp(
-            tf.concat([x, pi], axis=-1), list(hidden_sizes) + [1], activation, None
-        )
+        q_pi = mlp(tf.concat([x, pi], axis=-1), list(hidden_sizes) + [1], activation, None)
     return pi, q, q_pi
 
 
@@ -65,7 +61,7 @@ if __name__ == "__main__":
             max_ep_len=150,
             batch_size=64,
             polyak=0.95,
-            **kwargs
+            **kwargs,
         )
 
     eg = ExperimentGrid(name="ex2-2_ddpg")

@@ -37,8 +37,7 @@ if __name__ == "__main__":
     Run this file to verify your solution.
     """
     from spinup.exercises.common import print_result
-    from spinup.exercises.pytorch.problem_set_1_solutions import \
-        exercise1_1_soln
+    from spinup.exercises.pytorch.problem_set_1_solutions import exercise1_1_soln
 
     batch_size = 32
     dim = 10

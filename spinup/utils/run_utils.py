@@ -15,8 +15,8 @@ import numpy as np
 import psutil
 from tqdm import trange
 
-from spinup.user_config import (DEFAULT_DATA_DIR, DEFAULT_SHORTHAND,
-                                FORCE_DATESTAMP, WAIT_BEFORE_LAUNCH)
+from spinup.user_config import (DEFAULT_DATA_DIR, DEFAULT_SHORTHAND, FORCE_DATESTAMP,
+                                WAIT_BEFORE_LAUNCH)
 from spinup.utils.logx import colorize
 from spinup.utils.mpi_tools import mpi_fork
 from spinup.utils.serialization_utils import convert_json
@@ -87,9 +87,7 @@ def setup_logger_kwargs(exp_name, seed=None, data_dir=None, datestamp=False):
     return logger_kwargs
 
 
-def call_experiment(
-    exp_name, thunk, seed=0, num_cpu=1, data_dir=None, datestamp=False, **kwargs
-):
+def call_experiment(exp_name, thunk, seed=0, num_cpu=1, data_dir=None, datestamp=False, **kwargs):
     """
     Run a function (thunk) with hyperparameters (kwargs), plus configuration.
 
@@ -145,9 +143,7 @@ def call_experiment(
 
     # Set up logger output directory
     if "logger_kwargs" not in kwargs:
-        kwargs["logger_kwargs"] = setup_logger_kwargs(
-            exp_name, seed, data_dir, datestamp
-        )
+        kwargs["logger_kwargs"] = setup_logger_kwargs(exp_name, seed, data_dir, datestamp)
     else:
         print("Note: Call experiment is not handling logger_kwargs.\n")
 
@@ -351,9 +347,7 @@ class ExperimentGrid:
                 inclusion of this parameter into the name.
         """
         assert isinstance(key, str), "Key must be a string."
-        assert shorthand is None or isinstance(
-            shorthand, str
-        ), "Shorthand must be a string."
+        assert shorthand is None or isinstance(shorthand, str), "Shorthand must be a string."
         if not isinstance(vals, list):
             vals = [vals]
         if DEFAULT_SHORTHAND and shorthand is None:
@@ -393,14 +387,12 @@ class ExperimentGrid:
         # Build the rest of the name by looping through all parameters,
         # and deciding which ones need to go in there.
         for k, v, sh, inn in zip(self.keys, self.vals, self.shs, self.in_names):
-
             # Include a parameter in a name if either 1) it can take multiple
             # values, or 2) the user specified that it must appear in the name.
             # Except, however, when the parameter is 'seed'. Seed is handled
             # differently so that runs of the same experiment, with different
             # seeds, will be grouped by experiment name.
             if (len(v) > 1 or inn) and not (k == "seed"):
-
                 # Use the shorthand if available, otherwise the full name.
                 param_name = sh if sh is not None else k
                 param_name = valid_str(param_name)
@@ -492,9 +484,7 @@ class ExperimentGrid:
                     new_var[k0][sub_k] = v
                     unflatten_set.add(k0)
                 else:
-                    assert (
-                        k not in new_var
-                    ), "You can't assign multiple values to the same key."
+                    assert k not in new_var, "You can't assign multiple values to the same key."
                     new_var[k] = v
 
             # Make sure to fill out the nested dicts.

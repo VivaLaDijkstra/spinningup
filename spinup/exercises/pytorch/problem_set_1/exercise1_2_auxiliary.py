@@ -23,19 +23,15 @@ def mlp(sizes, activation, output_activation=nn.Identity):
 
 
 class MLPCritic(nn.Module):
-
     def __init__(self, obs_dim, hidden_sizes, activation):
         super().__init__()
         self.v_net = mlp([obs_dim] + list(hidden_sizes) + [1], activation)
 
     def forward(self, obs):
-        return torch.squeeze(
-            self.v_net(obs), -1
-        )  # Critical to ensure v has right shape.
+        return torch.squeeze(self.v_net(obs), -1)  # Critical to ensure v has right shape.
 
 
 class ExerciseActorCritic(nn.Module):
-
     def __init__(
         self,
         observation_space,

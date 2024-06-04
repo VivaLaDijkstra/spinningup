@@ -7,8 +7,7 @@ import tensorflow as tf
 import spinup.algos.tf1.vpg.core as core
 from spinup.utils.logx import EpochLogger
 from spinup.utils.mpi_tf import MpiAdamOptimizer, sync_all_params
-from spinup.utils.mpi_tools import (mpi_fork, mpi_statistics_scalar, num_procs,
-                                    proc_id)
+from spinup.utils.mpi_tools import mpi_fork, mpi_statistics_scalar, num_procs, proc_id
 
 
 class VPGBuffer:
@@ -204,9 +203,7 @@ def vpg(
     approx_kl = tf.reduce_mean(
         logp_old_ph - logp
     )  # a sample estimate for KL-divergence, easy to compute
-    approx_ent = tf.reduce_mean(
-        -logp
-    )  # a sample estimate for entropy, also easy to compute
+    approx_ent = tf.reduce_mean(-logp)  # a sample estimate for entropy, also easy to compute
 
     # Optimizers
     train_pi = MpiAdamOptimizer(learning_rate=pi_lr).minimize(pi_loss)
@@ -223,9 +220,7 @@ def vpg(
 
     def update():
         inputs = {k: v for k, v in zip(all_phs, buf.get())}
-        pi_l_old, v_l_old, ent = sess.run(
-            [pi_loss, v_loss, approx_ent], feed_dict=inputs
-        )
+        pi_l_old, v_l_old, ent = sess.run([pi_loss, v_loss, approx_ent], feed_dict=inputs)
 
         # Policy gradient step
         sess.run(train_pi, feed_dict=inputs)
@@ -251,9 +246,7 @@ def vpg(
     # Main loop: collect experience in env and update/log each epoch
     for epoch in range(epochs):
         for t in range(local_steps_per_epoch):
-            a, v_t, logp_t = sess.run(
-                get_action_ops, feed_dict={x_ph: o.reshape(1, -1)}
-            )
+            a, v_t, logp_t = sess.run(get_action_ops, feed_dict={x_ph: o.reshape(1, -1)})
 
             o2, r, d, _ = env.step(a[0])
             ep_ret += r

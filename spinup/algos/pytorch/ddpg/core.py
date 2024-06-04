@@ -22,7 +22,6 @@ def count_vars(module):
 
 
 class MLPActor(nn.Module):
-
     def __init__(self, obs_dim, act_dim, hidden_sizes, activation, act_limit):
         super().__init__()
         pi_sizes = [obs_dim] + list(hidden_sizes) + [act_dim]
@@ -35,7 +34,6 @@ class MLPActor(nn.Module):
 
 
 class MLPQFunction(nn.Module):
-
     def __init__(self, obs_dim, act_dim, hidden_sizes, activation):
         super().__init__()
         self.q = mlp([obs_dim + act_dim] + list(hidden_sizes) + [1], activation)
@@ -46,7 +44,6 @@ class MLPQFunction(nn.Module):
 
 
 class MLPActorCritic(nn.Module):
-
     def __init__(
         self,
         observation_space,

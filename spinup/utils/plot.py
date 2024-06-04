@@ -15,12 +15,7 @@ units = dict()
 
 
 def plot_data(
-    data,
-    xaxis="Epoch",
-    value="AverageEpRet",
-    condition="Condition1",
-    smooth=1,
-    **kwargs
+    data, xaxis="Epoch", value="AverageEpRet", condition="Condition1", smooth=1, **kwargs
 ):
     if smooth > 1:
         """
@@ -40,13 +35,7 @@ def plot_data(
         data = pd.concat(data, ignore_index=True)
     sns.set(style="darkgrid", font_scale=1.5)
     sns.tsplot(
-        data=data,
-        time=xaxis,
-        value=value,
-        unit="Unit",
-        condition=condition,
-        ci="sd",
-        **kwargs
+        data=data, time=xaxis, value=value, unit="Unit", condition=condition, ci="sd", **kwargs
     )
     """
     If you upgrade to any version of Seaborn greater than 0.8.1, switch from 
@@ -109,9 +98,7 @@ def get_datasets(logdir, condition=None):
             except:
                 print("Could not read from %s" % os.path.join(root, "progress.txt"))
                 continue
-            performance = (
-                "AverageTestEpRet" if "AverageTestEpRet" in exp_data else "AverageEpRet"
-            )
+            performance = "AverageTestEpRet" if "AverageTestEpRet" in exp_data else "AverageEpRet"
             exp_data.insert(len(exp_data.columns), "Unit", unit)
             exp_data.insert(len(exp_data.columns), "Condition1", condition1)
             exp_data.insert(len(exp_data.columns), "Condition2", condition2)
@@ -187,9 +174,7 @@ def make_plots(
     data = get_all_datasets(all_logdirs, legend, select, exclude)
     values = values if isinstance(values, list) else [values]
     condition = "Condition2" if count else "Condition1"
-    estimator = getattr(
-        np, estimator
-    )  # choose what to show on main curve: mean? max? min?
+    estimator = getattr(np, estimator)  # choose what to show on main curve: mean? max? min?
     for value in values:
         plt.figure()
         plot_data(

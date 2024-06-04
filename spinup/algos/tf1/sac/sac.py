@@ -167,9 +167,7 @@ def sac(
     ac_kwargs["action_space"] = env.action_space
 
     # Inputs to computation graph
-    x_ph, a_ph, x2_ph, r_ph, d_ph = core.placeholders(
-        obs_dim, act_dim, obs_dim, None, None
-    )
+    x_ph, a_ph, x2_ph, r_ph, d_ph = core.placeholders(obs_dim, act_dim, obs_dim, None, None)
 
     # Main outputs from computation graph
     with tf.variable_scope("main"):
@@ -194,19 +192,14 @@ def sac(
     var_counts = tuple(
         core.count_vars(scope) for scope in ["main/pi", "main/q1", "main/q2", "main"]
     )
-    print(
-        "\nNumber of parameters: \t pi: %d, \t q1: %d, \t q2: %d, \t total: %d\n"
-        % var_counts
-    )
+    print("\nNumber of parameters: \t pi: %d, \t q1: %d, \t q2: %d, \t total: %d\n" % var_counts)
 
     # Min Double-Q:
     min_q_pi = tf.minimum(q1_pi, q2_pi)
     min_q_targ = tf.minimum(q1_targ, q2_targ)
 
     # Entropy-regularized Bellman backup for Q functions, using Clipped Double-Q targets
-    q_backup = tf.stop_gradient(
-        r_ph + gamma * (1 - d_ph) * (min_q_targ - alpha * logp_pi_next)
-    )
+    q_backup = tf.stop_gradient(r_ph + gamma * (1 - d_ph) * (min_q_targ - alpha * logp_pi_next))
 
     # Soft actor-critic losses
     pi_loss = tf.reduce_mean(alpha * logp_pi - min_q_pi)
@@ -251,10 +244,7 @@ def sac(
 
     # Initializing targets to match main variables
     target_init = tf.group(
-        [
-            tf.assign(v_targ, v_main)
-            for v_main, v_targ in zip(get_vars("main"), get_vars("target"))
-        ]
+        [tf.assign(v_targ, v_main) for v_main, v_targ in zip(get_vars("main"), get_vars("target"))]
     )
 
     sess = tf.Session()
@@ -288,7 +278,6 @@ def sac(
 
     # Main loop: collect experience in env and update/log each epoch
     for t in range(total_steps):
-
         # Until start_steps have elapsed, randomly sample actions
         # from a uniform distribution for better exploration. Afterwards,
         # use the learned policy.

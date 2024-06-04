@@ -23,7 +23,6 @@ Bugged Actor-Critic
 
 
 class BuggedMLPActor(nn.Module):
-
     def __init__(self, obs_dim, act_dim, hidden_sizes, activation, act_limit):
         super().__init__()
         pi_sizes = [obs_dim] + list(hidden_sizes) + [act_dim]
@@ -36,7 +35,6 @@ class BuggedMLPActor(nn.Module):
 
 
 class BuggedMLPQFunction(nn.Module):
-
     def __init__(self, obs_dim, act_dim, hidden_sizes, activation):
         super().__init__()
         self.q = mlp([obs_dim + act_dim] + list(hidden_sizes) + [1], activation)
@@ -46,7 +44,6 @@ class BuggedMLPQFunction(nn.Module):
 
 
 class BuggedMLPActorCritic(nn.Module):
-
     def __init__(
         self,
         observation_space,
@@ -82,8 +79,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     def ddpg_with_actor_critic(bugged, **kwargs):
-        from spinup.exercises.pytorch.problem_set_2.exercise2_2 import \
-            BuggedMLPActorCritic
+        from spinup.exercises.pytorch.problem_set_2.exercise2_2 import BuggedMLPActorCritic
 
         actor_critic = BuggedMLPActorCritic if bugged else MLPActorCritic
         return ddpg(
@@ -93,7 +89,7 @@ if __name__ == "__main__":
             max_ep_len=150,
             batch_size=64,
             polyak=0.95,
-            **kwargs
+            **kwargs,
         )
 
     eg = ExperimentGrid(name="ex2-2_ddpg")

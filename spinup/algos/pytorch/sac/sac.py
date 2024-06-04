@@ -307,7 +307,6 @@ def sac(
 
     # Main loop: collect experience in env and update/log each epoch
     for t in range(total_steps):
-
         # Until start_steps have elapsed, randomly sample actions
         # from a uniform distribution for better exploration. Afterwards,
         # use the learned policy.

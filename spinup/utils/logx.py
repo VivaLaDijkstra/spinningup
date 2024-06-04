@@ -70,12 +70,8 @@ def restore_tf_graph(sess, fpath):
     model_info = joblib.load(osp.join(fpath, "model_info.pkl"))
     graph = tf.get_default_graph()
     model = dict()
-    model.update(
-        {k: graph.get_tensor_by_name(v) for k, v in model_info["inputs"].items()}
-    )
-    model.update(
-        {k: graph.get_tensor_by_name(v) for k, v in model_info["outputs"].items()}
-    )
+    model.update({k: graph.get_tensor_by_name(v) for k, v in model_info["inputs"].items()})
+    model.update({k: graph.get_tensor_by_name(v) for k, v in model_info["outputs"].items()})
     return model
 
 
@@ -117,11 +113,7 @@ class Logger:
                 os.makedirs(self.output_dir)
             self.output_file = open(osp.join(self.output_dir, output_fname), "w")
             atexit.register(self.output_file.close)
-            print(
-                colorize(
-                    "Logging data to %s" % self.output_file.name, "green", bold=True
-                )
-            )
+            print(colorize("Logging data to %s" % self.output_file.name, "green", bold=True))
         else:
             self.output_dir = None
             self.output_file = None
@@ -152,8 +144,7 @@ class Logger:
                 % key
             )
         assert key not in self.log_current_row, (
-            "You already set %s this iteration. Maybe you forgot to call dump_tabular()"
-            % key
+            "You already set %s this iteration. Maybe you forgot to call dump_tabular()" % key
         )
         self.log_current_row[key] = val
 
@@ -177,9 +168,7 @@ class Logger:
         if self.exp_name is not None:
             config_json["exp_name"] = self.exp_name
         if proc_id() == 0:
-            output = json.dumps(
-                config_json, separators=(",", ":\t"), indent=4, sort_keys=True
-            )
+            output = json.dumps(config_json, separators=(",", ":\t"), indent=4, sort_keys=True)
             print(colorize("Saving config:\n", color="cyan", bold=True))
             print(output)
             with open(osp.join(self.output_dir, "config.json"), "w") as out:
@@ -393,11 +382,7 @@ class EpochLogger(Logger):
             super().log_tabular(key, val)
         else:
             v = self.epoch_dict[key]
-            vals = (
-                np.concatenate(v)
-                if isinstance(v[0], np.ndarray) and len(v[0].shape) > 0
-                else v
-            )
+            vals = np.concatenate(v) if isinstance(v[0], np.ndarray) and len(v[0].shape) > 0 else v
             stats = mpi_statistics_scalar(vals, with_min_and_max=with_min_and_max)
             super().log_tabular(key if average_only else "Average" + key, stats[0])
             if not (average_only):
@@ -412,9 +397,5 @@ class EpochLogger(Logger):
         Lets an algorithm ask the logger for mean/std/min/max of a diagnostic.
         """
         v = self.epoch_dict[key]
-        vals = (
-            np.concatenate(v)
-            if isinstance(v[0], np.ndarray) and len(v[0].shape) > 0
-            else v
-        )
+        vals = np.concatenate(v) if isinstance(v[0], np.ndarray) and len(v[0].shape) > 0 else v
         return mpi_statistics_scalar(vals)

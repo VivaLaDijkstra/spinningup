@@ -28,7 +28,6 @@ LOG_STD_MIN = -20
 
 
 class SquashedGaussianMLPActor(nn.Module):
-
     def __init__(self, obs_dim, act_dim, hidden_sizes, activation, act_limit):
         super().__init__()
         self.net = mlp([obs_dim] + list(hidden_sizes), activation, activation)
@@ -58,9 +57,7 @@ class SquashedGaussianMLPActor(nn.Module):
             # and look in appendix C. This is a more numerically-stable equivalent to Eq 21.
             # Try deriving it yourself as a (very difficult) exercise. :)
             logp_pi = pi_distribution.log_prob(pi_action).sum(axis=-1)
-            logp_pi -= (2 * (np.log(2) - pi_action - F.softplus(-2 * pi_action))).sum(
-                axis=1
-            )
+            logp_pi -= (2 * (np.log(2) - pi_action - F.softplus(-2 * pi_action))).sum(axis=1)
         else:
             logp_pi = None
 
@@ -71,7 +68,6 @@ class SquashedGaussianMLPActor(nn.Module):
 
 
 class MLPQFunction(nn.Module):
-
     def __init__(self, obs_dim, act_dim, hidden_sizes, activation):
         super().__init__()
         self.q = mlp([obs_dim + act_dim] + list(hidden_sizes) + [1], activation)
@@ -82,7 +78,6 @@ class MLPQFunction(nn.Module):
 
 
 class MLPActorCritic(nn.Module):
-
     def __init__(
         self,
         observation_space,
@@ -97,9 +92,7 @@ class MLPActorCritic(nn.Module):
         act_limit = action_space.high[0]
 
         # build policy and value functions
-        self.pi = SquashedGaussianMLPActor(
-            obs_dim, act_dim, hidden_sizes, activation, act_limit
-        )
+        self.pi = SquashedGaussianMLPActor(obs_dim, act_dim, hidden_sizes, activation, act_limit)
         self.q1 = MLPQFunction(obs_dim, act_dim, hidden_sizes, activation)
         self.q2 = MLPQFunction(obs_dim, act_dim, hidden_sizes, activation)
 
