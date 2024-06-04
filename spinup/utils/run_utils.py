@@ -15,8 +15,12 @@ import numpy as np
 import psutil
 from tqdm import trange
 
-from spinup.user_config import (DEFAULT_DATA_DIR, DEFAULT_SHORTHAND, FORCE_DATESTAMP,
-                                WAIT_BEFORE_LAUNCH)
+from spinup.user_config import (
+    DEFAULT_DATA_DIR,
+    DEFAULT_SHORTHAND,
+    FORCE_DATESTAMP,
+    WAIT_BEFORE_LAUNCH,
+)
 from spinup.utils.logx import colorize
 from spinup.utils.mpi_tools import mpi_fork
 from spinup.utils.serialization_utils import convert_json
