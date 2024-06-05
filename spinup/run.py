@@ -7,6 +7,7 @@ from textwrap import dedent
 
 import gym
 
+import spinup
 from spinup.user_config import DEFAULT_BACKEND
 from spinup.utils.run_utils import ExperimentGrid
 
